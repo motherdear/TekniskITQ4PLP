@@ -1,2 +1,2 @@
 # TekniskITQ4PLP
-C# with ironscheme integration for functional programming in Programming Language Paradigms
+C# with IronScheme integration for functional programming in the 2016 Q4 class Programming Language Paradigms. 
