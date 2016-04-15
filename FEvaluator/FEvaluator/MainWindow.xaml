@@ -1,0 +1,14 @@
+﻿<Window x:Class="FEvaluator.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Simple Scheme Embedding" Height="320" Width="300">
+    <Grid>
+        <StackPanel>
+            <Label FontWeight="Bold">Scheme Result:</Label>
+            <TextBox x:Name="DisplayArea" Height="100" IsReadOnly="True"></TextBox>
+            <Label FontWeight="Bold">Input:</Label>
+            <TextBox x:Name="Input" Height="100"></TextBox>
+            <Button Click="Evaluate_Click">Evaluate</Button>
+        </StackPanel>
+    </Grid>
+</Window>
