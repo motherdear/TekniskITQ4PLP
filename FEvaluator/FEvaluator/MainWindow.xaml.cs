@@ -21,6 +21,7 @@ namespace FEvaluator
     public partial class Window1 : Window
     {
         private IIronScheme SchemeScript;
+        static string SchemePath = @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode.txt";
         public Window1()
         {
             InitializeComponent();
@@ -30,7 +31,11 @@ namespace FEvaluator
 
         private void Evaluate_Click(object sender, RoutedEventArgs e)
         {
-            DisplayArea.Text = SchemeScript.EvalToString(Input.Text);
+            LoadSchemeResources();
+            if (Input.Text.Length != 0)
+            {
+                DisplayArea.Text = SchemeScript.EvalToString(Input.Text);
+            }
         }
 
         private void DefinitionTests() 
@@ -44,6 +49,15 @@ namespace FEvaluator
 
             SchemeScript.Eval("(define foo 1000)");  // executes definition in interaction environment
             var r4 = SchemeScript.Eval("foo"); // r4 is 1000
+        }
+        /** Load all needed scheme resources*/
+        virtual public void LoadSchemeResources() 
+        {
+            string Text = System.IO.File.ReadAllText(SchemePath);
+            if (Text.Length != 0) 
+            {
+                DisplayArea.Text = SchemeScript.EvalToString(Text);
+            }
         }
     }
 }
