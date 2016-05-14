@@ -12,12 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Drawing;
 using Scheme;
 
 
 namespace FEvaluator
 {
     using System.Windows;
+
     public partial class Window1 : Window
     {
         private IIronScheme SchemeScript;
@@ -39,29 +41,15 @@ namespace FEvaluator
                 DisplayArea.Text = SchemeScript.EvalToString(Input.Text);
             }
         }
-
-        private void DefinitionTests() 
-        {
-            var r1 = SchemeScript.Eval("(+ 1 2)");  // r1 is 3 
-
-            var r2 = SchemeScript.Eval("(+ {0} {1})");  // r2 is 3
-
-            var myproc = SchemeScript.Eval("(lambda (x y) (+ x y))");
-            var r3 = SchemeScript.Eval("({0} {1} {2})"); // r3 is 3
-
-            SchemeScript.Eval("(define foo 1000)");  // executes definition in interaction environment
-            var r4 = SchemeScript.Eval("foo"); // r4 is 1000
-        }
         /** Load all needed scheme resources*/
         virtual public void LoadSchemeResources() 
         {
-            string SchemeResults = "";
             // Read all the needed scheme files
-            foreach (string Path in SchemePaths) 
+            foreach (string Path in SchemePaths)
             {
-                if (!System.IO.File.Exists(Path)) 
+                if (!System.IO.File.Exists(Path))
                 {
-                    SchemeResults += "\"" + Path + "\" Does not exist\n";
+                    DisplayArea.Text = "\"" + Path + "\" Does not exist\n";
                     break;
                 }
                 // Do the reading
@@ -69,10 +57,49 @@ namespace FEvaluator
                 // only execute the code if it exists
                 if (SchemeCode.Length != 0)
                 {
-                    SchemeResults += SchemeScript.EvalToString(SchemeCode) + "\n";
+                    SchemeScript.Eval(SchemeCode);
                 }
             }
-            DisplayArea.Text = SchemeResults;
+        }
+        virtual public void GetPointsFromScheme(string SchemeCode) 
+        {
+            string SchemeResults = "";
+            if (SchemeCode.Length != 0)
+            {
+                SchemeResults += SchemeScript.EvalToString(SchemeCode) + "\n";
+            }
+            //string TestString = "1,2;2,4;5,1";
+            string InString = ParseSchemePointString(SchemeResults);
+            List<Point> SchemePointList = ConvertStringToPixelArray(InString);
+
+            var ResultString = ConvertPointArrayToString(SchemePointList);
+
+            DisplayArea.Text = ResultString;
+        }
+        private string ParseSchemePointString(string InString) 
+        {
+            return InString.Trim(new char[] { '{', '}' });
+        }
+
+        private List<Point> ConvertStringToPixelArray(string InString) 
+        {
+            var ReturnList = new List<Point>();
+
+            ReturnList = InString.Split(';').Select(s => s.Split(',')).Select(a => new Point(x: Int32.Parse(a[0]),y: Int32.Parse(a[1]))).ToList<Point>();
+            return ReturnList;
+        }
+        private String ConvertPointArrayToString(List<Point> PointList) 
+        {
+            var Builder = new StringBuilder();
+            for (int i = 0; i < PointList.Count; ++i)
+            {
+                var Coordinate = PointList[i];
+                Builder.Append("{");
+                Builder.Append(Coordinate.ToString());
+                Builder.Append("}");
+                if (i < PointList.Count - 1) { Builder.Append(","); }
+            }
+            return Builder.ToString();
         }
     }
 }
