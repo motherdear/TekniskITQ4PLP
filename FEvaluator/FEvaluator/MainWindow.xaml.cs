@@ -21,7 +21,9 @@ namespace FEvaluator
     public partial class Window1 : Window
     {
         private IIronScheme SchemeScript;
-        static string SchemePath = @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode.txt";
+        static string[] SchemePaths = new string[] 
+                                      { @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode.txt", 
+                                        @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode2.txt" };
         public Window1()
         {
             InitializeComponent();
@@ -53,11 +55,24 @@ namespace FEvaluator
         /** Load all needed scheme resources*/
         virtual public void LoadSchemeResources() 
         {
-            string Text = System.IO.File.ReadAllText(SchemePath);
-            if (Text.Length != 0) 
+            string SchemeResults = "";
+            // Read all the needed scheme files
+            foreach (string Path in SchemePaths) 
             {
-                DisplayArea.Text = SchemeScript.EvalToString(Text);
+                if (!System.IO.File.Exists(Path)) 
+                {
+                    SchemeResults += "\"" + Path + "\" Does not exist\n";
+                    break;
+                }
+                // Do the reading
+                string SchemeCode = System.IO.File.ReadAllText(Path);
+                // only execute the code if it exists
+                if (SchemeCode.Length != 0)
+                {
+                    SchemeResults += SchemeScript.EvalToString(SchemeCode) + "\n";
+                }
             }
+            DisplayArea.Text = SchemeResults;
         }
     }
 }
