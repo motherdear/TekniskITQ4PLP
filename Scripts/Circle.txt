@@ -1,0 +1,47 @@
+(define RecursiveMidPoint 
+	(lambda(CurrentX CurrentY XCenter YCenter Radius Decider)
+  		; Check if we should continue the recursion
+  		(
+  			if (< CurrentX CurrentY)
+  			(;Continue recursion
+  				;(print "Test")
+  		  		if (< Decider 0)
+  			  	(; special cases where we only need to consider x ; Decider + (2*x) + 1
+  			  		let*([CurrentX (+ CurrentX 1)][Decider (+ (+ 1 (* 2 CurrentX)) Decider)])
+  					;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
+  			  		(print "Entered special case")
+  			  		(print Decider)
+  			  		;Decider
+  			    )
+  			   	else (; Normal case
+  			   	    ; x = x+1 ; pk = pk + (2*x)-(2*y) + 1
+  			  		;let*([CurrentX (+ CurrentX 1)][CurrentY (- CurrentY 1)][Decider (+ (+ - 1 (* 2 CurrentX)(* 2 CurrentY)) Decider)])
+  			  		(print "Entered normal case")
+  					;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
+  		   		)
+  			    
+  				;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
+  				;Save Pixel
+  				;Call self
+  				(print "Test")
+  				Decider
+  			)
+  		)
+  		;(print CurrentX "<" CurrentY)
+  		; return PixelList
+	)
+)
+(
+	; Define our initial params
+	let*([CurrentX 0][CurrentY 0][XCenter 0][YCenter 0][Radius 100][Decider 0])
+	; Update y to be equal to the radius
+	; Update pk
+  	(let*([CurrentY Radius][Decider (- 1 Radius)])
+  		; Save pixel
+  		; Call recursive algorithm
+  		(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
+  		;(print "derp")
+  	) 
+  	;Decider
+  	;Done return PixelList
+)
