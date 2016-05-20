@@ -1,47 +1,70 @@
+(define AddPixel
+    (lambda (X Y XCenter YCenter Pixels)
+    	;(print "X:" X " Y:"Y)
+    	set! Pixels (append Pixels 
+        				;putpixel(xc+x,yc+y,7);
+                     	(list(cons (+ XCenter X) (+ YCenter Y)))
+				        ;putpixel(xc+y,yc+x,7);
+                     	(list(cons (+ XCenter Y) (+ YCenter X)))
+				        ;putpixel(xc-y,yc+x,7);
+                     	(list(cons (- XCenter Y) (+ YCenter X)))
+				        ;putpixel(xc-x,yc+y,7);
+                     	(list(cons (- XCenter X) (+ YCenter Y)))
+				        ;putpixel(xc-x,yc-y,7);
+                     	(list(cons (- XCenter X) (- YCenter Y)))
+				        ;putpixel(xc-y,yc-x,7);
+                     	(list(cons (- XCenter Y) (- YCenter X)))
+				        ;putpixel(xc+y,yc-x,7);
+                     	(list(cons (+ XCenter Y) (- YCenter X)))
+				        ;putpixel(xc+x,yc-y,7);
+                     	(list(cons (+ XCenter X) (- YCenter Y)))
+                 	 )
+    )   
+)
 (define RecursiveMidPoint 
-	(lambda(CurrentX CurrentY XCenter YCenter Radius Decider)
-  		; Check if we should continue the recursion
-  		(
-  			if (< CurrentX CurrentY)
-  			(;Continue recursion
-  				;(print "Test")
-  		  		if (< Decider 0)
-  			  	(; special cases where we only need to consider x ; Decider + (2*x) + 1
-  			  		let*([CurrentX (+ CurrentX 1)][Decider (+ (+ 1 (* 2 CurrentX)) Decider)])
-  					;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
-  			  		(print "Entered special case")
-  			  		(print Decider)
-  			  		;Decider
-  			    )
-  			   	else (; Normal case
-  			   	    ; x = x+1 ; pk = pk + (2*x)-(2*y) + 1
-  			  		;let*([CurrentX (+ CurrentX 1)][CurrentY (- CurrentY 1)][Decider (+ (+ - 1 (* 2 CurrentX)(* 2 CurrentY)) Decider)])
-  			  		(print "Entered normal case")
-  					;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
-  		   		)
-  			    
-  				;(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
-  				;Save Pixel
-  				;Call self
-  				(print "Test")
-  				Decider
-  			)
-  		)
-  		;(print CurrentX "<" CurrentY)
-  		; return PixelList
-	)
+    (lambda (X Y XCenter YCenter Radius Pk Pixels)
+        ;(print "X:" X " Y:" Y )
+        (cond
+            ((< X Y)
+                (cond 
+                    ((< Pk 0) 
+                        ;x=x+1;
+                        (set! X (+ X 1))
+                        ;Pk=Pk+(2*x)+1
+                        (set! Pk (+ Pk (+ (* 2 X) 1)))
+                    )
+                    (else 
+                        ;x=x+1;
+                        (set! X (+ X 1))
+                        ;y=y-1;
+                        (set! Y (- Y 1))
+                        ;Pk=Pk+(2*x)-(2*y)+1;
+                        (set! Pk (+ Pk (+ (- (* 2 X)(* 2 Y)) 1)))
+                    )
+                )
+                (set! Pixels (AddPixel X Y XCenter YCenter Pixels))
+                (set! Pixels (RecursiveMidPoint X Y XCenter YCenter Radius Pk Pixels))
+                ;Pixels
+            )
+        )
+        Pixels
+    )
 )
 (
-	; Define our initial params
-	let*([CurrentX 0][CurrentY 0][XCenter 0][YCenter 0][Radius 100][Decider 0])
-	; Update y to be equal to the radius
-	; Update pk
-  	(let*([CurrentY Radius][Decider (- 1 Radius)])
-  		; Save pixel
-  		; Call recursive algorithm
-  		(RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Decider)
-  		;(print "derp")
-  	) 
-  	;Decider
-  	;Done return PixelList
+    ; Define our initial params
+    let*(
+          (Radius 100)
+          (CurrentX 0)
+          (CurrentY Radius)
+          (XCenter 0)
+          (YCenter 0)
+          (Pk (- 1 Radius))
+          (Pixels (list))
+        )
+   
+    ; Save first pixel
+    ; Call recursive algorithm
+    (set! Pixels (RecursiveMidPoint CurrentX CurrentY XCenter YCenter Radius Pk Pixels))
+    (print Pixels)
+    ;(print "done")
 )
