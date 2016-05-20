@@ -23,14 +23,15 @@ namespace FEvaluator
     public partial class Window1 : Window
     {
         private IIronScheme SchemeScript;
-        static string[] SchemePaths = new string[] 
-                                      { @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode.txt", 
-                                        @"C:\Users\motherdear\Documents\PLP\TekniskITQ4PLP\FEvaluator\FEvaluator\SchemeRootCode2.txt" };
+        static string[] SchemeNames = new string[] 
+                                      { "Script1.txt", 
+                                        "Script2.txt",
+                                        "Circle.txt"};
         public Window1()
         {
             InitializeComponent();
             // Instantiate scheme
-            SchemeScript = new SchemeHandler();        
+            SchemeScript = new SchemeHandler();
         }
 
         private void Evaluate_Click(object sender, RoutedEventArgs e)
@@ -45,8 +46,9 @@ namespace FEvaluator
         virtual public void LoadSchemeResources() 
         {
             // Read all the needed scheme files
-            foreach (string Path in SchemePaths)
+            foreach (string Name in SchemeNames)
             {
+                string Path = GetScriptPath(Name);
                 if (!System.IO.File.Exists(Path))
                 {
                     DisplayArea.Text = "\"" + Path + "\" Does not exist\n";
@@ -61,6 +63,7 @@ namespace FEvaluator
                 }
             }
         }
+
         virtual public void GetPointsFromScheme(string SchemeCode) 
         {
             string SchemeResults = "";
@@ -100,6 +103,19 @@ namespace FEvaluator
                 if (i < PointList.Count - 1) { Builder.Append(","); }
             }
             return Builder.ToString();
+        }
+
+        /** Get the actual path of each script */
+        private string GetScriptPath(string scriptName)
+        {
+            string Abspath = AppDomain.CurrentDomain.BaseDirectory;
+            int index = Abspath.IndexOf(@"FEvaluator\");
+            if (index > 0 && index < Abspath.Length)
+            {
+                Abspath.Substring(0, index);
+            }
+            Abspath = Abspath.Substring(0, index);
+            return System.IO.Path.Combine(Abspath, "Scripts", scriptName);
         }
     }
 }

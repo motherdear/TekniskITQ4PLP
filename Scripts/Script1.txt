@@ -1,0 +1,15 @@
+(define factorial
+(lambda (x)
+(if (= x 1)
+x
+(* (factorial (- x 1)) x))))
+
+(define Mul 
+  (
+   lambda (x y) ( * x y )
+   )
+ )
+
+(define double-any
+  (lambda (f x)
+    (f x x)))
