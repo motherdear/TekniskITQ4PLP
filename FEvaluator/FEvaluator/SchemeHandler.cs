@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Scheme
 {
     using IronScheme; // the extension methods are exported from this namespace
+    using IronScheme.Runtime;
     public interface IIronScheme
     {
         string EvalToString(string expr);
@@ -34,7 +35,14 @@ namespace Scheme
 
         public string EvalToString(string expr) 
         {
-            return expr.Eval().ToString();
+            //var exp = "(car '((1 2 3) 4 5 6))";
+            //var result = exp.Eval<Cons>(); // eval and cast => (1 2 3)
+            //var list = result.Cast<int>().ToList();
+            var result = expr.Eval<Cons>();
+            //Console.WriteLine(result.PrettyPrint);
+            Console.WriteLine(result.cdr.ToString());
+            
+            return result.ToPrettyString();
         }
 
         public string EvalToString(string expr, string importspec)

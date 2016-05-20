@@ -24,21 +24,24 @@ namespace FEvaluator
     {
         private IIronScheme SchemeScript;
         static string[] SchemeNames = new string[] 
-                                      { "Script1.txt", 
-                                        "Script2.txt",
-                                        "Circle.txt"};
+                                      { "Canvas.ss",
+                                          /*"Script1.txt",
+                                        "Circle.txt"*/};
         public Window1()
         {
             InitializeComponent();
             // Instantiate scheme
             SchemeScript = new SchemeHandler();
+            //Load Scripts
+            LoadSchemeResources();
         }
 
         private void Evaluate_Click(object sender, RoutedEventArgs e)
         {
-            LoadSchemeResources();
+            
             if (Input.Text.Length != 0)
             {
+                
                 DisplayArea.Text = SchemeScript.EvalToString(Input.Text);
             }
         }
@@ -60,6 +63,7 @@ namespace FEvaluator
                 if (SchemeCode.Length != 0)
                 {
                     SchemeScript.Eval(SchemeCode);
+                    Console.WriteLine("Script Loaded successfully");
                 }
             }
         }

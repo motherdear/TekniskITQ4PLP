@@ -13,3 +13,12 @@ x
 (define double-any
   (lambda (f x)
     (f x x)))
+
+(define create-list 
+	(lambda (x y) 
+		(cons '(x y) '(y x))
+	)
+)
+	         
+	             
+	             
