@@ -101,7 +101,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SchemeHandler.cs" />
+    <Compile Include="Scheme\ISchemeHandler.cs" />
+    <Compile Include="Scheme\SchemeHandler.cs" />
+    <Compile Include="Scheme\ScriptResolver.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,6 +141,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Scripts\canvas.ss" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
