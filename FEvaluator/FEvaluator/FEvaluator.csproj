@@ -38,32 +38,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.dll</HintPath>
     </Reference>
-    <Reference Include="ironscheme.boot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78f2e9d9541a0dee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ironscheme.boot">
       <HintPath>..\..\IronSchemeConsoleBins\ironscheme.boot.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Closures, Version=1.0.0.0, Culture=neutral, PublicKeyToken=78f2e9d9541a0dee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Closures">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Closures.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Remoting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Remoting">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Remoting.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Remoting.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Remoting.Client">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Remoting.Client.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Remoting.Server, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Remoting.Server">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Remoting.Server.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Scripting, Version=1.0.0.500, Culture=neutral, PublicKeyToken=78f2e9d9541a0dee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Scripting">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="IronScheme.Tests, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="IronScheme.Tests">
       <HintPath>..\..\IronSchemeConsoleBins\IronScheme.Tests.dll</HintPath>
     </Reference>
     <Reference Include="IronScheme.Web.Runtime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -101,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Scheme\CommandWrapper.cs" />
     <Compile Include="Scheme\ISchemeHandler.cs" />
     <Compile Include="Scheme\SchemeHandler.cs" />
     <Compile Include="Scheme\ScriptResolver.cs" />
