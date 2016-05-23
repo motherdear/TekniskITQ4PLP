@@ -23,10 +23,9 @@ namespace FEvaluator
     public partial class Window1 : Window
     {
         private IIronScheme SchemeScript;
+
         static string[] SchemeNames = new string[] 
-                                      { "Canvas.ss",
-                                          /*"Script1.txt",
-                                        "Circle.txt"*/};
+                                      { "Canvas.ss" };
         public Window1()
         {
             InitializeComponent();
