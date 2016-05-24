@@ -9,10 +9,12 @@
 (define (make-bounding-box bottom-left top-right)
   (letrec ([get-bottom-left (lambda () bottom-left)]
            [get-top-right   (lambda () top-right)]
+           [draw			(lambda () (cons "Red" (invoke 'perimeter (make-rectangle bottom-left top-right '() ""))))]
           )
     (lambda (op)
       (cond [(eq? op 'get-bottom-left) get-bottom-left]
             [(eq? op 'get-top-right) get-top-right]
+            [(eq? op 'draw) draw]
             [else "op not supported"]))))
 
 ; Creates an object-like line closure
@@ -51,7 +53,7 @@
 									       		
 								       	) (bresenham-rec rx1 rx2 steep? ry1 ystep error rdx rdy))) (bresenham from to))]
            [draw				(lambda ()
-			     					(cons color (perimeter)))]
+			     					(cons color (invoke 'clip canvas (perimeter))))]
           )
     (lambda (op)
       (cond [(eq? op 'get-from) get-from]
@@ -66,8 +68,6 @@
 	(letrec ([get-center      	(lambda () center)]
 			 [get-r           	(lambda () r)]
 			 [perimeter	 		(lambda ()
-			           	 			; (print (invoke 'get-bottom-left bb))
-			           	 			; (print (invoke 'get-top-right bb))
 									(define (midpoint center r)
 										(let ([x 0] 
 										      [y r]
@@ -120,11 +120,11 @@
 											    				              ) (midpoint-rec center new-x new-y new-dp))))
 										    ) (apply append (midpoint-rec center x y dp))
 										   ))
-										   (midpoint center r)
+										   (invoke 'clip canvas (midpoint center r))
 								)]
 			 [draw				(lambda ()
-			      					(cons color (perimeter)))]
-)
+			      					(cons color  (invoke 'clip canvas (perimeter))))]
+			)
     (lambda (op)
       (cond [(eq? op 'get-center) get-center]
             [(eq? op 'get-r) get-r]
@@ -184,15 +184,29 @@
              
 (define canvas
   (letrec (
-           [get-default-color (lambda () "black")]
+           [get-default-color 	(lambda () "black")]
            [bounding-box #f]
-           [get-bounding-box (lambda () bounding-box)]
-           [set-bounding-box (lambda(bottom-left top-right) (set! bounding-box (make-bounding-box bottom-left top-right)))]
+           [get-bounding-box 	(lambda () bounding-box)]
+           [set-bounding-box 	(lambda(bottom-left top-right) (set! bounding-box (make-bounding-box bottom-left top-right)))]
+           [clip				(lambda (perimeter)
+                					(let([bot-x (car (invoke 'get-bottom-left (get-bounding-box)))]
+				                         [bot-y (cadr (invoke 'get-bottom-left (get-bounding-box)))]
+                					     [top-x (car (invoke 'get-top-right (get-bounding-box)))]
+                					     [top-y (cadr (invoke 'get-top-right (get-bounding-box)))]
+                					    )
+                					     ;(print "bot-x=" bot-x " bot-y=" bot-y " top-x=" top-x " top-y=" top-y)
+                					     (filter (lambda (pixel) 
+                					     	(let([x 	(car pixel)]
+                					     	     [y 	(cadr pixel)]) 
+            					     	       (not (or (< x bot-x) (> x top-x) (< y bot-y) (> y top-y))))) perimeter)
+                					                      
+                					))]
           )
     (lambda (op)
        (cond [(eq? op 'get-default-color) get-default-color]
              [(eq? op 'get-bounding-box) get-bounding-box]
              [(eq? op 'set-bounding-box) set-bounding-box]
+             [(eq? op 'clip) clip]
              [else "op not supported"]))))
             
 ; ////////////////////////////////////////////////////////////////////////////
@@ -200,7 +214,8 @@
 ; Set the global bounding-box       
 (define BOUNDING-BOX
   (lambda (bottom-left top-right)
-    (invoke 'set-bounding-box canvas bottom-left top-right)))
+    (invoke 'set-bounding-box canvas bottom-left top-right)
+    (invoke 'get-bounding-box canvas)))
 
 ; Create a line and compute its coords
 (define LINE
@@ -224,5 +239,3 @@
 (define FILL
 	(lambda (color obj)
 		(letrec ([fill (make-fill color obj)]) fill)))
-
-(BOUNDING-BOX '(0 0) '(100 100))                    
