@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using FEvaluator.Scheme;
-using IronScheme;
+﻿using System.Linq;
 using IronScheme.Runtime;
 
 namespace FEvaluator.Scheme

@@ -108,7 +108,7 @@
              
 (define canvas
   (letrec (
-           [get-default-color (lambda () "black")]
+           [get-default-color (lambda () "Green")]
            [bounding-box #f]
            [get-bounding-box (lambda () bounding-box)]
            [set-bounding-box (lambda(bottom-left top-right) (set! bounding-box (make-bounding-box bottom-left top-right)))]
