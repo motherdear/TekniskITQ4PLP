@@ -7,12 +7,12 @@ namespace FEvaluator
 
     public partial class MainWindow : Window
     {
-        private CommandWrapper _command;
+        private CommandRunner _command;
         
         public MainWindow()
         {
             InitializeComponent();
-            _command = new CommandWrapper();
+            _command = new CommandRunner();
         }
 
         private void Evaluate_Click(object sender, RoutedEventArgs e)
@@ -20,7 +20,8 @@ namespace FEvaluator
             
             if (Input.Text.Length != 0)
             {
-                DisplayArea.Text = _command.exec(Input.Text);
+                _command.run(Input.Text);
+                DisplayArea.Text = "Command ran.";
             }
         }
     }

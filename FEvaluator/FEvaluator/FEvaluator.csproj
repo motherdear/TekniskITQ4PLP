@@ -7,8 +7,8 @@
     <ProjectGuid>{12BE93AA-286E-4E6A-BBC6-88C674B1CE77}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfSample</RootNamespace>
-    <AssemblyName>WpfSample</AssemblyName>
+    <RootNamespace>FEvaluator</RootNamespace>
+    <AssemblyName>FEvaluator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -94,8 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Scheme\CommandWrapper.cs" />
+    <Compile Include="Scheme\CommandResult.cs" />
+    <Compile Include="Scheme\CommandRunner.cs" />
     <Compile Include="Scheme\ISchemeHandler.cs" />
+    <Compile Include="Scheme\Pixel.cs" />
     <Compile Include="Scheme\SchemeHandler.cs" />
     <Compile Include="Scheme\ScriptResolver.cs" />
     <Page Include="MainWindow.xaml">
