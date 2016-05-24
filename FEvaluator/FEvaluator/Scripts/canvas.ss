@@ -20,10 +20,36 @@
   (letrec ([get-from        (lambda () from)]
            [get-to          (lambda () to)]
            [perimeter  		(lambda ()
-                  				; (print (invoke 'get-bottom-left bb))
-		           	 			; (print (invoke 'get-top-right bb))
-                          		(list '(0 0) '(1 1) '(2 2) '(3 3) '(4 4) '(5 5) '(6 6) '(7 7) '(8 8) '(9 9)
-                          		      '(10 10) '(11 11) '(12 12) '(13 13) '(14 14) '(15 15) '(16 16) '(17 17) '(18 18) '(19 19)))]
+                  				(define (bresenham from to)
+									(let* ([dx		(- (car to) (car from))]
+									       [dy		(- (cadr to) (cadr from))]
+									       [steep?  (> (abs dy) (abs dx))]
+									       [x1		(if steep? (cadr from) (car from))]
+									       [y1		(if steep? (car from) (cadr from))]
+									       [x2		(if steep? (cadr to) (car to))]
+									       [y2		(if steep? (car to) (cadr to))]
+									       [rx1		(if (> x1 x2) x2 x1)]
+									       [rx2		(if (> x1 x2) x1 x2)]
+									       [ry1		(if (> x1 x2) y2 y1)]
+									       [ry2		(if (> x1 x2) y1 y2)]
+									       [rdx		(- rx2 rx1)]
+									       [rdy		(- ry2 ry1)]
+									       [error	(floor (/ rdx 2.0))]
+									       [ystep	(if (< ry1 ry2) 1 -1)]
+									      )
+								       (define (bresenham-rec x1 x2 steep? y ystep error dx dy)
+									       		
+									       		(if (> x1 x2) '()
+									       		    (let* ([new-error (- error (abs dy))]
+									       		           [new-y	  (if (< new-error 0) (+ y ystep) y)]
+									       		           [rerror	  (if (< new-error 0) (+ dx new-error) new-error)]
+									       		          )
+									       		         
+									       		         (append (if steep? (list (list y x1)) (list (list x1 y))) (bresenham-rec (+ x1 1) x2 steep? new-y ystep rerror dx dy ))
+									       		     )
+									       		)
+									       		
+								       	) (bresenham-rec rx1 rx2 steep? ry1 ystep error rdx rdy))) (bresenham from to))]
            [draw				(lambda ()
 			     					(cons color (perimeter)))]
           )
@@ -42,10 +68,60 @@
 			 [perimeter	 		(lambda ()
 			           	 			; (print (invoke 'get-bottom-left bb))
 			           	 			; (print (invoke 'get-top-right bb))
-									(list '(0 0) '(1 1) '(2 2) '(3 3) '(4 4)))]
+									(define (midpoint center r)
+										(let ([x 0] 
+										      [y r]
+										      [dp (- 1 r)]
+										     )
+											(define (midpoint-rec center x y dp)
+												(if (> x y) 
+												    '()
+												    (let*   ([x0 		(car center)]
+										                     [y0		(cadr center)]
+										                     [new-x		(+ x 1)]
+										      	 			 [new-y		(if (< dp 0) y (- y 1))]
+										      	 			 [new-dp 	(if (< dp 0) (+ dp (* 2 new-x) 3) (- (+ dp (* 2 new-x)) (+ (* 2 new-y) 5)))]
+										     				)
+											    				(append (list (list (+ x0 new-x) (+ y0 new-y)) 
+											    				              (list (- x0 new-x) (+ y0 new-y))
+											    				              (list (+ x0 new-x) (- y0 new-y))
+											    				              (list (- x0 new-x) (- y0 new-y))
+											    				              (list (+ x0 new-y) (+ y0 new-x))
+											    				              (list (- x0 new-y) (+ y0 new-x))
+											    				              (list (+ x0 new-y) (- y0 new-x))
+											    				              (list (- x0 new-y) (- y0 new-x))
+											    				              ) (midpoint-rec center new-x new-y new-dp))))
+										    )(midpoint-rec center x y dp)
+										   ))
+										   (midpoint center r)
+									)]
 		 	 [fill				(lambda ()
 									; call to perimeter
-									(list '(0 0) '(1 1) '(2 2) '(3 3) '(4 4) '(0 0) '(1 1) '(2 2) '(3 3) '(4 4) '(0 0) '(1 1) '(2 2) '(3 3) '(4 4)))]
+									(define (midpoint center r)
+										(let ([x 0] 
+										      [y r]
+										      [dp (- 1 r)]
+										     )
+											(define (midpoint-rec center x y dp)
+												(if (> x y) 
+												    '()
+												    (let*   ([x0 		(car center)]
+										                     [y0		(cadr center)]
+										                     [new-x		(+ x 1)]
+										      	 			 [new-y		(if (< dp 0) y (- y 1))]
+										      	 			 [new-dp 	(if (< dp 0) (+ dp (* 2 new-x) 3) (- (+ dp (* 2 new-x)) (+ (* 2 new-y) 5)))]
+										     				)
+											    				; Replace with calls to make-line
+											    				(append (list  
+											    				              (invoke 'perimeter (make-line (list (+ x0 new-x) (+ y0 new-y)) (list (- x0 new-x) (+ y0 new-y)) bb color))
+											    				              (invoke 'perimeter (make-line (list (+ x0 new-x) (- y0 new-y)) (list (- x0 new-x) (- y0 new-y)) bb color))
+											    				              (invoke 'perimeter (make-line (list (+ x0 new-y) (+ y0 new-x)) (list (- x0 new-y) (+ y0 new-x)) bb color))
+											    				              (invoke 'perimeter (make-line (list (+ x0 new-y) (- y0 new-x)) (list (- x0 new-y) (- y0 new-x)) bb color))
+											    				              ) (midpoint-rec center new-x new-y new-dp))))
+										    ) (apply append (midpoint-rec center x y dp))
+										   ))
+										   (midpoint center r)
+								)]
 			 [draw				(lambda ()
 			      					(cons color (perimeter)))]
 )
@@ -66,20 +142,20 @@
 	         [right    			(make-line top-right (list (car top-right) (cadr bottom-left)) bb color)]
 	   	     [bottom   			(make-line (list (car top-right) (cadr bottom-left)) bottom-left bb color)]
 	         [perimeter	 		(lambda ()
-	                          		; (apply append (list (invoke 'perimeter left)
-     								; 	(invoke 'perimeter top)
-     								; 	(invoke 'perimeter right)
-     								; 	(invoke 'perimeter bottom bb))))]
+	                          		(apply append (list (invoke 'perimeter left)
+     									(invoke 'perimeter top)
+     									(invoke 'perimeter right)
+     									(invoke 'perimeter bottom))))]
      								; (print (invoke 'get-bottom-left bb))
 			           	 			; (print (invoke 'get-top-right bb))
-                     				(list '(0 0) '(0 1) '(0 2) '(0 3) '(0 4) '(0 5) '(0 6) '(0 7) '(0 8) '(0 9) 
- 										  '(0 10) '(0 11) '(0 12) '(0 13) '(0 14) '(0 15) '(0 16) '(0 17) '(0 18) '(0 19)
-										  '(0 0) '(1 0) '(2 0) '(3 0) '(4 0) '(5 0) '(6 0) '(7 0) '(8 0) '(9 0) '(10 0) 
-										  '(11 0) '(12 0) '(13 0) '(14 0) '(15 0) '(16 0) '(17 0) '(18 0) '(19 0)
-										  '(19 0) '(19 1) '(19 2) '(19 3) '(19 4) '(19 5) '(19 6) '(19 7) '(19 8) '(19 9) '(19 10) 
-										  '(19 11) '(19 12) '(19 13) '(19 14) '(19 15) '(19 16) '(19 17) '(19 18) '(19 19)
-										  '(0 19) '(1 19) '(2 19) '(3 19) '(4 19) '(5 19) '(6 19) '(7 19) '(8 19) '(9 19) '(10 19) 
-										  '(11 19) '(12 19) '(13 19) '(14 19) '(15 19) '(16 19) '(17 19) '(18 19) '(19 19)))]
+            ;          				(list '(0 0) '(0 1) '(0 2) '(0 3) '(0 4) '(0 5) '(0 6) '(0 7) '(0 8) '(0 9) 
+ 										 ; '(0 10) '(0 11) '(0 12) '(0 13) '(0 14) '(0 15) '(0 16) '(0 17) '(0 18) '(0 19)
+										  ;'(0 0) '(1 0) '(2 0) '(3 0) '(4 0) '(5 0) '(6 0) '(7 0) '(8 0) '(9 0) '(10 0) 
+										  ;'(11 0) '(12 0) '(13 0) '(14 0) '(15 0) '(16 0) '(17 0) '(18 0) '(19 0)
+										  ;'(19 0) '(19 1) '(19 2) '(19 3) '(19 4) '(19 5) '(19 6) '(19 7) '(19 8) '(19 9) '(19 10) 
+										  ;'(19 11) '(19 12) '(19 13) '(19 14) '(19 15) '(19 16) '(19 17) '(19 18) '(19 19)
+										  ;'(0 19) '(1 19) '(2 19) '(3 19) '(4 19) '(5 19) '(6 19) '(7 19) '(8 19) '(9 19) '(10 19) 
+										  ;'(11 19) '(12 19) '(13 19) '(14 19) '(15 19) '(16 19) '(17 19) '(18 19) '(19 19)))]
             [fill				(lambda ()
                 					(list '(0 0) '(1 1) '(2 2) '(3 3) '(4 4) '(0 0) '(1 1) '(2 2) '(3 3) '(4 4) '(0 0) '(1 1) '(2 2) '(3 3) '(4 4)))]
             [draw				(lambda ()
@@ -108,7 +184,7 @@
              
 (define canvas
   (letrec (
-           [get-default-color (lambda () "Green")]
+           [get-default-color (lambda () "black")]
            [bounding-box #f]
            [get-bounding-box (lambda () bounding-box)]
            [set-bounding-box (lambda(bottom-left top-right) (set! bounding-box (make-bounding-box bottom-left top-right)))]
