@@ -18,7 +18,8 @@ namespace FEvaluator
             _command = new CommandRunner();
             _bitmap = BitmapFactory.New(512, 512);
             imgCanvas.Source = _bitmap;
-            
+            var Testing = new Tests();
+            Console.WriteLine("All Test Cases Were Successful: " + Testing.TestAllTestCases(new Pixel(100, 100)).ToString());
         }
 
         private void handleTextAt(string command)
