@@ -64,7 +64,7 @@ namespace FEvaluator
 
                             foreach (Pixel pixel in result.Pixels)
                             {
-                                _bitmap.SetPixel(pixel.X, pixel.Y, (Color)ColorConverter.ConvertFromString(result.Color));
+                                _bitmap.SetPixel(pixel.X, (_bitmap.PixelHeight - 1) - pixel.Y, (Color)ColorConverter.ConvertFromString(result.Color));
                             }
                         
                         }
