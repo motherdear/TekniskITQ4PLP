@@ -5,12 +5,12 @@ namespace FEvaluator.Scheme
 {
     public class CommandResult
     {
-        public String color { get; set; }
-        public List<Pixel> pixels { get; set; }
+        public String Color { get; set; }
+        public List<Pixel> Pixels { get; set; }
 
         public CommandResult()
         {
-            pixels = new List<Pixel>();
+            Pixels = new List<Pixel>();
         }
     }
 }

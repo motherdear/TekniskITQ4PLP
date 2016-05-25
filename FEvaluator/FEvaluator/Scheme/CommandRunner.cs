@@ -20,11 +20,11 @@ namespace FEvaluator.Scheme
             var color = (_eval.car as string);
             var pixels = _eval.cdr as Cons;
 
-            result.color = color;
+            result.Color = color;
             foreach (Cons pixel in pixels)
             {
                 int[] _pixels = pixel.Cast<int>().ToArray();
-                result.pixels.Add(new Pixel(_pixels[0], _pixels[1]));
+                result.Pixels.Add(new Pixel(_pixels[0], _pixels[1]));
             }
 
             return result;
