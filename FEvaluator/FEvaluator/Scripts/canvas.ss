@@ -200,7 +200,7 @@
                                                  (filter (lambda (pixel) 
                                                     (let([x     (car pixel)]
                                                          [y     (cadr pixel)]) 
-                                                       (not (or (< x bot-x) (> x top-x) (< y bot-y) (> y top-y))))) perimeter)
+                                                       (not (or (<= x bot-x) (>= x top-x) (<= y bot-y) (>= y top-y))))) perimeter)
                                                                   
                                             ))]
           )
