@@ -218,22 +218,34 @@
 (define BOUNDING-BOX
   (lambda (bottom-left top-right)
     (let ([bb (make-bounding-box bottom-left top-right (invoke 'get-default-bounding-color canvas))])
-    (invoke 'set-bounding-box canvas bb) bb )))
+    (invoke 'set-bounding-box canvas bb)
+    	(when (or (< (car bottom-left) 0) (< (car top-right) 0) (< (cadr bottom-left) 0) (< (cadr top-right) 0))
+      			(raise "Invalid Arguments: Negative Arguments typed"))
+     bb )))
 
 ; Create a line and compute its coords
 (define LINE
   (lambda (from to)
-    (let([line  (make-line from to (invoke 'get-default-color canvas))]) line)))
+    (let([line  (make-line from to (invoke 'get-default-color canvas))]) 
+               	(when (or (< (car from) 0) (< (car to) 0) (< (cadr from) 0) (< (cadr to) 0))
+      			(raise "Invalid Arguments: Negative Arguments typed"))	
+               line)))
 
 ; Create a circle and compute its coords
 (define CIRCLE
   (lambda (center r)
-    (let([circle (make-circle center r (invoke 'get-default-color canvas))]) circle)))
+    (let([circle (make-circle center r (invoke 'get-default-color canvas))])
+    	(when (or (< (car center) 0) (< (cadr center) 0) (< r 0))
+      			(raise "Invalid Arguments: Negative Arguments typed"))
+    		 circle)))
    
 ; Create a rectangle and compute its coords
 (define RECTANGLE
   (lambda (bottom-left top-right)
-    (let ([rectangle (make-rectangle bottom-left top-right (invoke 'get-default-color canvas))]) rectangle)))
+    (let ([rectangle (make-rectangle bottom-left top-right (invoke 'get-default-color canvas))])
+    	(when (or (< (car bottom-left) 0) (< (car top-right) 0) (< (cadr bottom-left) 0) (< (cadr top-right) 0))
+      			(raise "Invalid Arguments: Negative Arguments typed"))
+     rectangle)))
                     
 (define DRAW 
     (lambda(color . objs)

@@ -19,8 +19,8 @@ namespace FEvaluator
             _command = new CommandRunner();
             _bitmap = BitmapFactory.New(512, 512);
             imgCanvas.Source = _bitmap;
-            var Testing = new Tests();
-            Console.WriteLine("All Test Cases Were Successful: " + Testing.TestAllTestCases(new Pixel(100, 100)).ToString());
+            //var Testing = new Tests();
+            //Console.WriteLine("All Test Cases Were Successful: " + Testing.TestAllTestCases(new Pixel(100, 100)).ToString());
         }
         
         private void handleTextAt(string command)
@@ -69,13 +69,21 @@ namespace FEvaluator
                         }
                         else
                         {
-                            CommandResult result = _command.run(command);
-
-                            foreach (Pixel pixel in result.Pixels)
+                            try
                             {
-                                _bitmap.SetPixel(pixel.X, (_bitmap.PixelHeight - 1) - pixel.Y, (Color)ColorConverter.ConvertFromString(result.Color));
+                                CommandResult result = _command.run(command);
+
+                                foreach (Pixel pixel in result.Pixels)
+                                {
+                                    _bitmap.SetPixel(pixel.X, (_bitmap.PixelHeight - 1) - pixel.Y, (Color)ColorConverter.ConvertFromString(result.Color));
+                                }
                             }
-                        
+                            catch (IronScheme.Runtime.SchemeException ex)
+                            {
+                                Error.Text += ex.Condition;
+                            }
+
+
                         }
                     }
                 }
