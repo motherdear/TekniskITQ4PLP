@@ -179,7 +179,6 @@ namespace FEvaluator
             // Init values
             bool bNeighborFound = false;
             int Distance = 0;
-            Pixel BadPixel;
             // Check all pixels in the list if they are neighbors
             for (int i = 0; i < TestList.Count; i++)
             {
@@ -192,7 +191,6 @@ namespace FEvaluator
                     bNeighborFound = true;
                 }
             }
-            //Console.WriteLine("X:" + Convert.ToInt32(TestPixel.X).ToString() + " Y:" + TestPixel.Y.ToString() + "Test Result: " + bNeighborFound.ToString());
             // If no neighbor was found then return false;
             if (!bNeighborFound)
             {

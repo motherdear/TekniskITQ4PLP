@@ -100,6 +100,7 @@
     <Compile Include="Scheme\Pixel.cs" />
     <Compile Include="Scheme\SchemeHandler.cs" />
     <Compile Include="Scheme\ScriptResolver.cs" />
+    <Compile Include="Tests.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
