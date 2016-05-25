@@ -4,6 +4,7 @@ using FEvaluator.Scheme;
 namespace FEvaluator
 {
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
 
@@ -21,7 +22,7 @@ namespace FEvaluator
             var Testing = new Tests();
             Console.WriteLine("All Test Cases Were Successful: " + Testing.TestAllTestCases(new Pixel(100, 100)).ToString());
         }
-
+        
         private void handleTextAt(string command)
         {
             // Sigh, should have learned regex...
@@ -40,6 +41,13 @@ namespace FEvaluator
             idxClose = command.IndexOf(textToken, idxOpen + 1, StringComparison.OrdinalIgnoreCase);
 
             string text = command.Substring(idxOpen + textToken.Length, (idxClose - idxOpen) - textToken.Length);
+
+            TextBlock txtblk = new TextBlock();
+            txtblk.Text = text;
+            wrappingCanvas.Children.Add(txtblk);
+            Canvas.SetLeft(txtblk, (Convert.ToDouble(coords[0])));
+            Canvas.SetTop(txtblk, 511 - Convert.ToDouble(coords[1]));
+
         }
 
         private void Evaluate_Click(object sender, RoutedEventArgs e)
