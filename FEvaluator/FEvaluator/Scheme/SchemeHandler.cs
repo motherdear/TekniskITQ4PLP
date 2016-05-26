@@ -13,11 +13,13 @@ namespace FEvaluator.Scheme
         public SchemeHandler()
         {
             "(+)".Eval(); // Bootstrap loading of underlying evaluator to speed up first evaluation.
+            // Reset the environment, // HACK HACK, we really should be evalling with different interaction environments so that we could have seperate handlers
+            "(interaction-environment (new-interaction-environment))".Eval();
             ScriptResolver.Load(this, SCRIPTS);
         }
         public object Eval(string expr, params object[] args)
         {
-                return expr.Eval();
+            return expr.Eval();
         }
 
         public object Eval(string expr, string importspec, params object[] args)

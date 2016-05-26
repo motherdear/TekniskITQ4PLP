@@ -15,6 +15,7 @@ namespace FEvaluator
         public bool TestAllTestCases(Pixel Size)
         {
             _command = new CommandRunner();
+            CommandResult Result = _command.run("(BOUNDING-BOX '(0 0) '(0 0))");
             Console.WriteLine("Checking Test Cases");
             return TestCircle(Size.X / 2) && TestLine(Size.X, Size.Y) && TestRectangle(Size.X, Size.Y) && TestFill(Size.X, Size.Y);
         }
